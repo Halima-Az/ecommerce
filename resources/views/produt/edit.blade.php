@@ -32,6 +32,10 @@
                     <label class="block text-gray-700">Image</label>
                     <input type="file" name="image" 
                         class="w-full text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700">
+                        @if ($produt->image)
+                           <img src="{{ asset('storage/' . $produt->image) }}" alt="image"
+                            class="w-10 h-10 object-cover rounded-lg"> 
+                        @endif
                 </div>
 
                 <div>

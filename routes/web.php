@@ -25,3 +25,7 @@ Route::delete('/product/{produt}',[ProdutController::class,'destroy'])->where('p
 Route::get('/product/edit/{produt}',[ProdutController::class,'edit'])->where('produt','\d+')->name('edit');
 Route::put('/product/{produt}',[ProdutController::class,'update'])->where('produt','\d+')->name('update');
 Route::get('/product/connexion',[logincontroller::class,'connexion'])->name('connexion');
+Route::get('/product/show/{produt}',[logincontroller::class,'show'])->where('produt','\d+')->name('show');
+Route::get('/product/search',function(){
+return view('produt.find');
+})->name('search');

@@ -37,7 +37,7 @@ class ProdutController extends Controller
      */
     public function store(produtRequest $request)
     {
-        
+
         $formfield = $request->validated();
 
         if ($request->hasFile('image')) {
@@ -58,7 +58,9 @@ class ProdutController extends Controller
      * @param  \App\Models\produt  $produt
      * @return \Illuminate\Http\Response
      */
-    public function show(produt $produt) {}
+    public function show(produt $produt) {
+        return view('procut.show',compact('produt'));
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -68,7 +70,7 @@ class ProdutController extends Controller
      */
     public function edit(produt $produt)
     {
-        return view('produt.edit',compact('produt'));
+        return view('produt.edit', compact('produt'));
     }
 
     /**
@@ -80,15 +82,25 @@ class ProdutController extends Controller
      */
     public function update(produtRequest $request, produt $produt)
     {
-       $formfield=$request->validated();
-       if($request->hasFile('image')){
-        $formfield['image']=$request->file('image')->store('products','public');
-       }
-       else{
-          $formfield['image']='products/product.png';
-       }
-       $produt->fill($formfield)->save();
-       return redirect()->route('index');
+        $formfield = $request->validated();
+        if ($request->hasFile('image')) {
+            
+            if ($produt->image && $produt->image !== 'products/product.png') {
+                $oldImagePath = public_path('storage/' . $produt->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath); 
+                }
+            }
+
+           
+            $formfield['image'] = $request->file('image')->store('products', 'public');
+        } else {
+         
+            unset($formfield['image']);
+        }
+
+        $produt->fill($formfield)->save();
+        return redirect()->route('index');
     }
 
     /**
@@ -98,8 +110,8 @@ class ProdutController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(produt $produt)
-    { 
-       
+    {
+
         $produt->delete();
         return redirect()->route('index');
     }
